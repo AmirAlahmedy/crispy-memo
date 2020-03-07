@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Reminder</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="action_add">Add a reminder</string>
+    <string name="memoPlaceHolder">Memo</string>
+</resources>
