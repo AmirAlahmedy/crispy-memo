@@ -13,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.reminder.R;
+import com.example.reminder.Reminder;
 import com.example.reminder.adapters.MyreminderRecyclerViewAdapter;
+import com.example.reminder.database.SqliteDatabase;
 import com.example.reminder.dummy.DummyContent;
 import com.example.reminder.dummy.DummyContent.String;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -71,7 +75,10 @@ public class reminderFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyreminderRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
+            SqliteDatabase mDataBase = new SqliteDatabase(context);
+            ArrayList<Reminder> allReminders = mDataBase.listReminders();
+            recyclerView.setAdapter(new MyreminderRecyclerViewAdapter(context, allReminders, mListener));
         }
         return view;
     }

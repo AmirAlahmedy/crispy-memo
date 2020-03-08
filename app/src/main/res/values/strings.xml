@@ -5,4 +5,5 @@
 
     <string name="action_add">Add a reminder</string>
     <string name="memoPlaceHolder">Memo</string>
+    <string name="add"/>
 </resources>

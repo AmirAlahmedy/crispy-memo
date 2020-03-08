@@ -11,4 +11,4 @@
     app:layoutManager="LinearLayoutManager"
     tools:context=".UI.Fragments.reminderFragment"
     tools:listitem="@layout/fragment_reminder"
-    android:layout_marginBottom="100dp"/>
+    android:layout_marginBottom="100dp" />

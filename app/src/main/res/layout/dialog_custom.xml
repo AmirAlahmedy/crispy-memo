@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ScrollView01"
     android:layout_width="350dp"
     android:layout_height="175dp"
@@ -14,32 +14,12 @@
         android:layout_height="match_parent"
         android:padding="5dp">
 
-<!--        <TextView-->
-<!--            -->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:background="@drawable/circlebackground"-->
-<!--            android:gravity="center"-->
-<!--            android:text="X"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textStyle="bold" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="15dp">
 
-<!--            <TextView-->
-<!--                android:id="@+id/editText"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Memo"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_marginTop="5dp"/>-->
 
             <EditText
                 android:id="@+id/EditTextName"
@@ -62,7 +42,8 @@
                 android:textColor="@color/white"
                 android:textColorHint="#FFFFFF"
                 android:textSize="18sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:id="@+id/important"/>
 
         </LinearLayout>
 
@@ -79,7 +60,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:text="Cancel"/>
+                android:text="Cancel"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/buttonshape"/>
+
 
         <Button
             android:id="@+id/btnAdd"
@@ -87,7 +71,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="center"
-            android:text="Add"/>
+            android:text="Add"
+            android:textColor="@color/colorAccent"
+            android:background="@drawable/buttonshape"
+            android:layout_marginLeft="10dp"/>
 
 
         </LinearLayout>

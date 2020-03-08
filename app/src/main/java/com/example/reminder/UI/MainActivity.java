@@ -5,26 +5,40 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.example.reminder.R;
+import com.example.reminder.Reminder;
 import com.example.reminder.UI.Fragments.reminderFragment;
 import com.example.reminder.adapters.MyreminderRecyclerViewAdapter;
 import com.example.reminder.dummy.DummyContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements reminderFragment.OnListFragmentInteractionListener {
+import com.example.reminder.database.SqliteDatabase;
+
+public class MainActivity extends AppCompatActivity implements reminderFragment.OnListFragmentInteractionListener, Filterable {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private ArrayList<String> reminders = new ArrayList<>();
 
@@ -32,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
     private RecyclerView rRecyclerView;
     private RecyclerView.Adapter aAdapter;
     private RecyclerView.LayoutManager lLayoutManager;
+
+    private SqliteDatabase mDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +63,22 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
         lLayoutManager = new LinearLayoutManager(this);
         rRecyclerView.setLayoutManager(lLayoutManager);
 
-        DummyContent dummy = new DummyContent();
-        aAdapter = new MyreminderRecyclerViewAdapter(dummy.ITEMS, this);
+        mDataBase = new SqliteDatabase(this);
+        ArrayList<Reminder> allReminders = mDataBase.listReminders();
+
+
+        aAdapter = new MyreminderRecyclerViewAdapter(this, allReminders, this);
         rRecyclerView.setAdapter(aAdapter);
+
+        if(allReminders.size() > 0){
+            rRecyclerView.setVisibility(View.VISIBLE);
+            aAdapter = new MyreminderRecyclerViewAdapter(this, allReminders, this);
+            rRecyclerView.setAdapter(aAdapter);
+
+        }else {
+            rRecyclerView.setVisibility(View.GONE);
+            Toast.makeText(this, "There are no reminders in the database. Start adding now", Toast.LENGTH_LONG).show();
+        }
 
 
         reminderDialog = new Dialog(this);
@@ -58,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopUp(view);
+                addReminderDialog(view);
             }
 
         });
@@ -66,28 +95,53 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
 
     }
 
-    public void showPopUp(View view) {
-        TextView txtClose;
+    public void addReminderDialog(View view) {
+
         reminderDialog.setContentView(R.layout.dialog_custom);
+        final EditText contentField = (EditText)reminderDialog.findViewById(R.id.EditTextName);
+        final CheckBox isImportant = (CheckBox)reminderDialog.findViewById(R.id.important);
+
+        Button btn;
+        btn = (Button) reminderDialog.findViewById(R.id.btnAdd);
+        btn.setText("Add");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String content = contentField.getText().toString();
+                final boolean important = isImportant.isChecked();
+
+                if(TextUtils.isEmpty(content)){
+                    Toast.makeText(MainActivity.this, "Something went wrong. Check your input values", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Reminder newReminder = new Reminder(content, important);
+                    mDataBase.addReminder(newReminder);
+
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        });
+
+        TextView txtClose;
         txtClose = (TextView) reminderDialog.findViewById(R.id.txtClose);
         txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reminderDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Task cancelled", Toast.LENGTH_LONG).show();
             }
         });
         reminderDialog.show();
     }
 
-    public void addReminder(Dialog reminderDialog){
-        Button addBtn;
-        addBtn = (Button) reminderDialog.findViewById(R.id.btnAdd);
-        addBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mDataBase != null){
+            mDataBase.close();
+        }
     }
 
     @Override
@@ -108,13 +162,12 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
         if (id == R.id.action_settings) {
             return true;
         }else if(id == R.id.action_add) {
-            // TODO show a popup to add a reminder
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     View view;
                     view = menuItem.getActionView();
-                    showPopUp(view);
+                    addReminderDialog(view);
                     return true;
                 }
             });
@@ -125,10 +178,15 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
 
     @Override
     public void onListFragmentInteraction(DummyContent.String item) {
-        Log.d("Hey", "Item Clicked!");
+        Log.d(TAG, "Item Clicked!");
         View view = new View(this);
         //TODO show edit popup not add
-        showPopUp(view);
+        addReminderDialog(view);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 }
 
