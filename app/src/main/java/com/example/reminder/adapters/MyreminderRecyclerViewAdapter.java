@@ -92,7 +92,6 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
 //        CheckBox chkbx;
 //        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
 //        chkbx.setChecked(reminders.isImportant());
-
         Button btn;
         btn = (Button) reminderDialog.findViewById(R.id.btnAdd);
         btn.setText("Edit");
