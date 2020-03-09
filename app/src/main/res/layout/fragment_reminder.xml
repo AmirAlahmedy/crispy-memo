@@ -17,6 +17,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="19dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
     <ImageView
         android:id="@+id/img"
         android:layout_width="15dp"

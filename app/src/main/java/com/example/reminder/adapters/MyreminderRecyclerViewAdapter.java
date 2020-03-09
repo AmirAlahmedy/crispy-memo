@@ -75,25 +75,28 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                 }
             }
         });
+
     }
 
     private void editReminderDialog(final Reminder reminders) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final Dialog reminderDialog = new Dialog(context);
         reminderDialog.setContentView(R.layout.dialog_custom);
-
         final EditText contentField = (EditText) reminderDialog.findViewById(R.id.EditTextName);
-       final CheckBox isImportant = (CheckBox) reminderDialog.findViewById(R.id.important);
+        final CheckBox isImportant = (CheckBox) reminderDialog.findViewById(R.id.important);
 
         if(reminders != null) {
             contentField.setText(reminders.getContent());
         }
 
-//        CheckBox chkbx;
-//        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
-//        chkbx.setChecked(reminders.isImportant());
+        CheckBox chkbx;
+        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
+        chkbx.setChecked(reminders.isImportant());
 
         Button btn;
+        Button btn2;
+        btn2=(Button) reminderDialog.findViewById(R.id.btnDelete);
+        btn2.setVisibility(View.VISIBLE);
         btn = (Button) reminderDialog.findViewById(R.id.btnAdd);
         btn.setText("Edit");
         btn.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +110,10 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                 }
                 else{
                     mDatabase.updateReminder(new Reminder(reminders.getId(), content, important));
+                   /* if(important)
+                    {
+
+                    }*/
                     //refresh the activity
                     ((Activity)context).finish();
                     context.startActivity(((Activity)context).getIntent());
@@ -123,6 +130,14 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
             public void onClick(View view) {
                 reminderDialog.dismiss();
                 Toast.makeText(context, "Task cancelled", Toast.LENGTH_LONG).show();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.deleteReminder(reminders.getId());
+                ((Activity)context).finish();
+                context.startActivity(((Activity)context).getIntent());
             }
         });
         reminderDialog.show();

@@ -65,6 +65,17 @@
                 android:background="@drawable/buttonshape"/>
 
 
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="Delete"
+                android:visibility="gone"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/buttonshape"
+                android:layout_marginLeft="10dp"/>
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
