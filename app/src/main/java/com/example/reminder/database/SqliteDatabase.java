@@ -28,7 +28,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_REMINDERS_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_CONTENT + " TEXT," + COLUMN_IMPORTANCE + " INTEGER)";
+        String CREATE_REMINDERS_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_CONTENT + " TEXT," + COLUMN_IMPORTANCE + " INTEGER DEFAULT 0)";
         sqLiteDatabase.execSQL(CREATE_REMINDERS_TABLE);
     }
 
@@ -49,8 +49,7 @@ public class SqliteDatabase extends SQLiteOpenHelper {
             do {
                 int id = Integer.parseInt(cursor.getString(0));
                 String content = cursor.getString(1);
-                boolean important = Boolean.parseBoolean(cursor.getString(2));
-//                boolean important = false;
+                boolean important = (cursor.getInt(cursor.getColumnIndex(COLUMN_IMPORTANCE)) == 1);
                 storeReminders.add(new Reminder(id, content, important));
             } while (cursor.moveToNext());
         }

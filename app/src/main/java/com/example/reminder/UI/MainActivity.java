@@ -2,6 +2,7 @@ package com.example.reminder.UI;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.reminder.R;
@@ -14,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
                 else{
                     Reminder newReminder = new Reminder(content, important);
                     mDataBase.addReminder(newReminder);
-
                     finish();
                     startActivity(getIntent());
                 }

@@ -45,7 +45,10 @@
                 android:textStyle="italic"
                 android:id="@+id/important"/>
 
+
         </LinearLayout>
+
+
 
         <LinearLayout
             android:orientation="horizontal"
@@ -53,6 +56,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_gravity="end">
+
+            <Button
+                android:id="@+id/btnDelete"
+                style="delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:visibility="gone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="100dp"
+                android:background="@android:drawable/ic_menu_delete"
+                android:gravity="center"
+                android:minWidth="48dip"
+                android:textColor="@color/colorAccent" />
 
             <Button
                 android:id="@+id/txtClose"
@@ -63,6 +80,7 @@
                 android:text="Cancel"
                 android:textColor="@color/colorAccent"
                 android:background="@drawable/buttonshape"/>
+
 
 
         <Button
@@ -80,5 +98,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 </androidx.core.widget.NestedScrollView>

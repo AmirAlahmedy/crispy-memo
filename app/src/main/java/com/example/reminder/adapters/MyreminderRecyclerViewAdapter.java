@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,10 +60,13 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final Reminder reminders =  mValues.get(position);
+        final Reminder reminder =  mValues.get(position);
+        System.out.println("isImportant: " + reminder.isImportant()); // TODO always false
 
-//        holder.mIdView.setText(mValues.get(position).getId());
-        holder.mContentView.setText(mValues.get(position).getContent());
+        holder.mContentView.setText(reminder.getContent());
+        if(reminder.isImportant()){
+            holder.imgView.setBackgroundColor(Color.parseColor("#FF4081"));
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,28 +75,30 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    editReminderDialog(reminders);
+                    editReminderDialog(reminder, holder);
                 }
             }
         });
+
     }
 
-    private void editReminderDialog(final Reminder reminders) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+    private void editReminderDialog(final Reminder reminders, final ViewHolder holder) {
+        final LayoutInflater inflater = LayoutInflater.from(context);
+
         final Dialog reminderDialog = new Dialog(context);
         reminderDialog.setContentView(R.layout.dialog_custom);
-
         final EditText contentField = (EditText) reminderDialog.findViewById(R.id.EditTextName);
-       final CheckBox isImportant = (CheckBox) reminderDialog.findViewById(R.id.important);
+        final CheckBox isImportant = (CheckBox) reminderDialog.findViewById(R.id.important);
 
         if(reminders != null) {
             contentField.setText(reminders.getContent());
         }
 
-//        CheckBox chkbx;
-//        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
-//        chkbx.setChecked(reminders.isImportant());
+
         Button btn;
+        Button btn2;
+        btn2=(Button) reminderDialog.findViewById(R.id.btnDelete);
+        btn2.setVisibility(View.VISIBLE);
         btn = (Button) reminderDialog.findViewById(R.id.btnAdd);
         btn.setText("Edit");
         btn.setOnClickListener(new View.OnClickListener() {
@@ -105,14 +111,18 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                     Toast.makeText(context, "Something went wrong. Check your input values", Toast.LENGTH_LONG).show();
                 }
                 else{
+
                     mDatabase.updateReminder(new Reminder(reminders.getId(), content, important));
+                    if (important){
+                        System.out.println(content + " is important");
+                        holder.imgView.setBackgroundColor(Color.parseColor("#FF4081"));
+                    }
                     //refresh the activity
                     ((Activity)context).finish();
                     context.startActivity(((Activity)context).getIntent());
                 }
             }
         });
-
 
 
         TextView txtClose;
@@ -122,6 +132,14 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
             public void onClick(View view) {
                 reminderDialog.dismiss();
                 Toast.makeText(context, "Task cancelled", Toast.LENGTH_LONG).show();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.deleteReminder(reminders.getId());
+                ((Activity)context).finish();
+                context.startActivity(((Activity)context).getIntent());
             }
         });
         reminderDialog.show();
@@ -143,6 +161,7 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
             mView = view;
             imgView = (ImageView) view.findViewById(R.id.img);
             mContentView = (TextView) view.findViewById(R.id.content);
+
 
         }
 
