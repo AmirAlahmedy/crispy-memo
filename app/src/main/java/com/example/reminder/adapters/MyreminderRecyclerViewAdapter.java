@@ -89,9 +89,6 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
             contentField.setText(reminders.getContent());
         }
 
-        CheckBox chkbx;
-        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
-        chkbx.setChecked(reminders.isImportant());
 
         Button btn;
         Button btn2;
@@ -109,11 +106,12 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                     Toast.makeText(context, "Something went wrong. Check your input values", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    mDatabase.updateReminder(new Reminder(reminders.getId(), content, important));
-                   /* if(important)
-                    {
 
-                    }*/
+                    mDatabase.updateReminder(new Reminder(reminders.getId(), content, important));
+                    if(important==true)
+                    {
+                        reminderDialog.findViewById(R.id.view).setBackgroundColor(Integer.parseInt("colorAccent"));
+                    }
                     //refresh the activity
                     ((Activity)context).finish();
                     context.startActivity(((Activity)context).getIntent());
@@ -121,6 +119,18 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
             }
         });
 
+       /* final CheckBox chkbx;
+        chkbx = (CheckBox) reminderDialog.findViewById(R.id.important);
+       chkbx.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+              Toast.makeText(context, "Marked as important "+view.getId(), Toast.LENGTH_LONG).show();
+               //mDatabase.updateReminder();
+               reminders.setImportant(true);
+               reminderDialog.findViewById(R.id.view).setBackgroundColor(Integer.parseInt("colorAccent"));
+           }
+       });*/
+        //chkbx.setChecked(reminders.isImportant());
 
 
         TextView txtClose;

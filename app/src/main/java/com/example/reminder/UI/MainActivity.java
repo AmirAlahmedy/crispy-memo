@@ -116,7 +116,10 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
                 else{
                     Reminder newReminder = new Reminder(content, important);
                     mDataBase.addReminder(newReminder);
-
+                    if(important==true)
+                    {
+                        reminderDialog.findViewById(R.id.view).setBackgroundColor(Integer.parseInt("colorAccent"));
+                    }
                     finish();
                     startActivity(getIntent());
                 }
