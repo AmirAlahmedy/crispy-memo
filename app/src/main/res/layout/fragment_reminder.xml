@@ -18,15 +18,10 @@
     android:orientation="horizontal">
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/img"
         android:layout_width="19dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="15dp"
-        android:layout_height="match_parent"
+        android:layout_weight="1"
         />
 
 

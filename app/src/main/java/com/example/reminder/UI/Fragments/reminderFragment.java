@@ -34,6 +34,7 @@ public class reminderFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private RecyclerView.Adapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,7 +79,8 @@ public class reminderFragment extends Fragment {
 
             SqliteDatabase mDataBase = new SqliteDatabase(context);
             ArrayList<Reminder> allReminders = mDataBase.listReminders();
-            recyclerView.setAdapter(new MyreminderRecyclerViewAdapter(context, allReminders, mListener));
+            mAdapter = new MyreminderRecyclerViewAdapter(context, allReminders, mListener);
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -114,5 +116,6 @@ public class reminderFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(String item);
+
     }
 }

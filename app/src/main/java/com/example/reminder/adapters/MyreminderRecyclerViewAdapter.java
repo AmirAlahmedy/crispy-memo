@@ -1,12 +1,9 @@
 package com.example.reminder.adapters;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.reminder.R;
 import com.example.reminder.Reminder;
 import com.example.reminder.UI.Fragments.reminderFragment.OnListFragmentInteractionListener;
@@ -61,7 +56,6 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         final Reminder reminder =  mValues.get(position);
-        System.out.println("isImportant: " + reminder.isImportant()); // TODO always false
 
         holder.mContentView.setText(reminder.getContent());
         if(reminder.isImportant()){
@@ -83,7 +77,6 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
     }
 
     private void editReminderDialog(final Reminder reminders, final ViewHolder holder) {
-        final LayoutInflater inflater = LayoutInflater.from(context);
 
         final Dialog reminderDialog = new Dialog(context);
         reminderDialog.setContentView(R.layout.dialog_custom);
@@ -120,6 +113,7 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
                     //refresh the activity
                     ((Activity)context).finish();
                     context.startActivity(((Activity)context).getIntent());
+
                 }
             }
         });
@@ -152,14 +146,14 @@ public class MyreminderRecyclerViewAdapter extends RecyclerView.Adapter<Myremind
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final ImageView imgView;
+        public final View imgView;
         public final TextView mContentView;
         public String mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            imgView = (ImageView) view.findViewById(R.id.img);
+            imgView = (View) view.findViewById(R.id.img);
             mContentView = (TextView) view.findViewById(R.id.content);
 
 

@@ -1,28 +1,19 @@
 package com.example.reminder.UI;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-
 import com.example.reminder.R;
 import com.example.reminder.Reminder;
 import com.example.reminder.UI.Fragments.reminderFragment;
 import com.example.reminder.adapters.MyreminderRecyclerViewAdapter;
 import com.example.reminder.dummy.DummyContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +22,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -159,20 +149,15 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        View view = item.getActionView();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_exit) {
+            finish();
             return true;
         }else if(id == R.id.action_add) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    View view;
-                    view = menuItem.getActionView();
-                    addReminderDialog(view);
-                    return true;
-                }
-            });
+            addReminderDialog(view);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -182,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements reminderFragment.
     public void onListFragmentInteraction(DummyContent.String item) {
         Log.d(TAG, "Item Clicked!");
         View view = new View(this);
-        //TODO show edit popup not add
-        addReminderDialog(view);
+        // TODO: Show edit popup here not in the adapter
     }
 
     @Override
